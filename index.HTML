@@ -1,0 +1,865 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Amazon SCOT-AI NextGen Sandbox</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
+<!doctype html>
+<html lang="en" class="h-full">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Amazon Smart Operational Logistical Controls - Standalone Console</title>
+    <!-- Tailwind CSS v4 CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+    <!-- Lucide Icons via CDN -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+      body {
+        font-family: 'Inter', sans-serif;
+      }
+      .font-mono {
+        font-family: 'JetBrains Mono', monospace;
+      }
+      ::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+      }
+      ::-webkit-scrollbar-track {
+        background: #f1f1f1;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #ccc;
+        border-radius: 3px;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: #aaa;
+      }
+    </style>
+  </head>
+  <body class="bg-[#EAEDED] text-[#111] min-h-screen flex flex-col selection:bg-[#ff9900]/30 selection:text-slate-900">
+
+    <!-- 1. 全域導航與 KPI 指標欄 -->
+    <header class="bg-[#232F3E] border-b border-[#131A22] sticky top-0 z-50 shadow-md">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div class="flex items-center gap-3">
+          <svg viewBox="0 0 100 100" class="w-9 h-9 shrink-0 fill-[#ff9900]">
+            <path d="M 80 45 C 50 30, 20 50, 10 75 C 25 82, 45 82, 58 75 C 65 71, 75 58, 80 45 Z" />
+            <path d="M 12 75 C 30 88, 65 88, 88 64 C 91 61, 93 63, 91 66 C 80 78, 48 88, 12 75 Z" />
+          </svg>
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="text-sm font-black tracking-widest text-[#ff9900] uppercase font-mono">AMZN</span>
+              <span class="text-[10px] bg-[#37475A] text-gray-205 border border-gray-600 px-2 py-0.5 rounded uppercase tracking-wider font-bold">
+                System v4.0
+              </span>
+              <span class="text-[10px] bg-emerald-500/10 text-emerald-800 border border-emerald-500/30 px-2 py-0.5 rounded font-bold uppercase">
+                Active
+              </span>
+            </div>
+            <h1 class="text-sm font-bold text-white tracking-tight">
+              智慧電子商務與預測試算系統 (Operational Logistical Controls - Standalone)
+            </h1>
+          </div>
+        </div>
+
+        <div class="flex flex-wrap items-center gap-2.5">
+          <div class="bg-[#131A22] px-3 py-1 rounded border border-gray-705 text-center min-w-[85px]">
+            <span class="text-[8px] text-gray-400 block uppercase font-mono">系統整合比</span>
+            <span class="text-xs font-bold text-green-400 font-mono">3-Stage (98.4%)</span>
+          </div>
+          <div class="bg-[#131A22] px-3 py-1 rounded border border-gray-705 text-center min-w-[85px]">
+            <span class="text-[8px] text-gray-400 block uppercase font-mono">周轉警戒點</span>
+            <span class="text-xs font-bold text-[#FF9900] font-mono" id="alert-kpi">Fire TV (42/125)</span>
+          </div>
+          <div class="bg-[#131A22] px-3 py-1 rounded border border-gray-705 text-center min-w-[85px]">
+            <span class="text-[8px] text-gray-400 block uppercase font-mono">Global Node</span>
+            <span class="text-[11px] font-bold text-white font-mono flex items-center justify-center gap-1">
+              <span class="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse shadow-[0_0_8px_rgba(34,197,94,0.6)]"></span> ONLINE
+            </span>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- 2. 主要工作空間 -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-6 flex flex-col gap-6 w-full">
+      
+      <!-- 第一區：智慧預測與定價試算 -->
+      <section class="bg-white border border-gray-200 rounded shadow-sm p-6 flex flex-col gap-5 border-t-4 border-[#ff9900]">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-gray-100 pb-4">
+          <div>
+            <h2 class="text-sm font-bold text-gray-800 uppercase flex items-center gap-2">
+              <i data-lucide="trending-up" class="w-4 h-4 text-[#ff9900]"></i> 一、智慧預測與動態最佳化試算區 (Predictive Analytics Hub)
+            </h2>
+            <p class="text-xs text-gray-500 mt-1">
+              根據歷史銷售脈絡，AI 預測下個季度需求序列，並即時透過價格彈性係數試算在 Amazon Buy Box 中的銷售轉化盈餘。
+            </p>
+          </div>
+          <div class="text-[10px] bg-amber-50 text-[#B12704] border border-amber-200 px-3 py-1 rounded font-bold font-mono">
+            雙向補貨模型：安全庫存 ROP 臨界修正
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+          <!-- 在庫品項 SKU 選擇器 -->
+          <div class="lg:col-span-4 flex flex-col gap-3">
+            <h3 class="text-xs font-bold tracking-widest text-gray-500 uppercase flex items-center gap-2">
+              <i data-lucide="archive" class="w-3.5 h-3.5 text-[#ff9900]"></i> 亞馬遜在庫品項 (Amazon SKU)
+            </h3>
+            <div class="grid grid-cols-2 lg:grid-cols-1 gap-2.5" id="product-list">
+              <button onclick="selectProduct('echo_pop')" id="btn-sku-echo_pop" class="p-3 text-left rounded transition-all duration-300 border bg-amber-50/80 border-[#ff9900] shadow-sm text-gray-900 font-sans">
+                <div class="flex justify-between items-start">
+                  <span class="text-[10px] text-gray-400 font-mono tracking-tight">物聯網與智慧家庭</span>
+                  <span class="text-[9px] px-1.5 py-0.5 rounded font-bold flex items-center bg-green-100 text-green-700">✦ 高密預測</span>
+                </div>
+                <h4 class="font-bold text-gray-900 text-xs mt-1.5 truncate">Amazon Echo Pop 智慧音箱</h4>
+                <div class="flex justify-between items-center mt-3 pt-2.5 border-t border-gray-100">
+                  <div>
+                    <span class="text-[9px] text-gray-400 block">盤商售價 (Buy Box)</span>
+                    <span class="text-xs font-bold font-mono text-[#B12704]">$39.99</span>
+                  </div>
+                  <div class="text-right">
+                    <span class="text-[9px] text-gray-400 block">庫存水位</span>
+                    <span class="text-xs font-mono font-bold text-gray-800">75 <span class="text-[9px] text-gray-400 font-normal">/110</span></span>
+                  </div>
+                </div>
+              </button>
+
+              <button onclick="selectProduct('kindle_paper')" id="btn-sku-kindle_paper" class="p-3 text-left rounded transition-all duration-300 border bg-white border-gray-200 hover:border-gray-300 hover:bg-gray-50 text-gray-700 font-sans">
+                <div class="flex justify-between items-start">
+                  <span class="text-[10px] text-gray-400 font-mono tracking-tight">消費電子與數位內容</span>
+                  <span class="text-[9px] px-1.5 py-0.5 rounded font-bold flex items-center bg-blue-100 text-blue-700">穩定銷售</span>
+                </div>
+                <h4 class="font-bold text-gray-900 text-xs mt-1.5 truncate">Kindle Paperwhite 電子閱讀器</h4>
+                <div class="flex justify-between items-center mt-3 pt-2.5 border-t border-gray-100">
+                  <div>
+                    <span class="text-[9px] text-gray-400 block">盤商售價</span>
+                    <span class="text-xs font-bold font-mono text-[#B12704]">$139.99</span>
+                  </div>
+                  <div class="text-right">
+                    <span class="text-[9px] text-gray-400 block">庫存水位</span>
+                    <span class="text-xs font-mono font-bold text-gray-800">155 <span class="text-[9px] text-gray-400 font-normal">/120</span></span>
+                  </div>
+                </div>
+              </button>
+
+              <button onclick="selectProduct('ring_bell')" id="btn-sku-ring_bell" class="p-3 text-left rounded transition-all duration-300 border bg-white border-gray-200 hover:border-gray-300 hover:bg-gray-50 text-gray-700 font-sans">
+                <div class="flex justify-between items-start">
+                  <span class="text-[10px] text-gray-400 font-mono tracking-tight">智慧家居保全</span>
+                  <span class="text-[9px] px-1.5 py-0.5 rounded font-bold flex items-center bg-blue-100 text-blue-700">穩定銷售</span>
+                </div>
+                <h4 class="font-bold text-gray-900 text-xs mt-1.5 truncate">Ring Video Doorbell 連網門鈴</h4>
+                <div class="flex justify-between items-center mt-3 pt-2.5 border-t border-gray-100">
+                  <div>
+                    <span class="text-[9px] text-gray-400 block">盤商售價</span>
+                    <span class="text-xs font-bold font-mono text-[#B12704]">$99.99</span>
+                  </div>
+                  <div class="text-right">
+                    <span class="text-[9px] text-gray-400 block">庫存水位</span>
+                    <span class="text-xs font-mono font-bold text-gray-800">310 <span class="text-[9px] text-gray-400 font-normal">/200</span></span>
+                  </div>
+                </div>
+              </button>
+
+              <button onclick="selectProduct('fire_stick')" id="btn-sku-fire_stick" class="p-3 text-left rounded transition-all duration-300 border bg-white border-gray-200 hover:border-gray-300 hover:bg-gray-50 text-gray-700 font-sans">
+                <div class="flex justify-between items-start">
+                  <span class="text-[10px] text-gray-400 font-mono tracking-tight">數位智慧機上盒</span>
+                  <span class="text-[9px] px-1.5 py-0.5 rounded font-bold flex items-center bg-green-100 text-green-700">✦ 高密預測</span>
+                </div>
+                <h4 class="font-bold text-gray-900 text-xs mt-1.5 truncate">Fire TV Stick 4K 串流電視棒</h4>
+                <div class="flex justify-between items-center mt-3 pt-2.5 border-t border-gray-100">
+                  <div>
+                    <span class="text-[9px] text-gray-400 block">盤商售價</span>
+                    <span class="text-xs font-bold font-mono text-[#B12704]">$49.99</span>
+                  </div>
+                  <div class="text-right">
+                    <span class="text-[9px] text-gray-400 block">庫存水位</span>
+                    <span class="text-xs font-mono font-bold text-red-650" id="fire-tv-stock">42 <span class="text-[9px] text-gray-400 font-normal">/125</span></span>
+                  </div>
+                </div>
+              </button>
+            </div>
+          </div>
+
+          <!-- 主要圖表試算空間二合一 -->
+          <div class="lg:col-span-8 flex flex-col gap-6">
+            <!-- 1. 12週銷售預測分析 -->
+            <div class="bg-white border border-gray-200 rounded shadow-sm p-4 flex flex-col gap-3">
+              <div class="flex flex-col sm:flex-row justify-between sm:items-center gap-2">
+                <div>
+                  <div class="flex items-center gap-1.5">
+                    <span class="w-2.5 h-2.5 rounded-full bg-blue-600"></span>
+                    <h4 class="text-xs font-bold text-gray-800" id="forecast-title">
+                      SCOT 預測模型：銷售趨勢 12 週分析 (Amazon Echo Pop 智慧音箱)
+                    </h4>
+                  </div>
+                  <p class="text-[11px] text-gray-500">
+                    整合近 6 週真實大數據銷售 (FBA 實際銷量) 與下 6 週 AI 多變量神經網路預測序列。
+                  </p>
+                </div>
+                <div class="flex items-center gap-3 text-[9px]">
+                  <span class="flex items-center gap-1.5 text-gray-500">
+                    <span class="w-3 h-1.5 bg-[#37475A] rounded"></span> 實際銷售 (Actual)
+                  </span>
+                  <span class="flex items-center gap-1.5 text-blue-600 font-bold">
+                    <span class="w-3 h-1.5 border-t-2 border-dashed border-blue-600"></span> AI 預測 (Forecast)
+                  </span>
+                </div>
+              </div>
+
+              <!-- SVG 12週銷售趨勢主圖 -->
+              <div class="relative w-full h-[180px] bg-gray-50 border border-gray-150 rounded overflow-hidden p-2">
+                <svg id="forecast-svg" class="w-full h-full" viewBox="0 0 600 160">
+                </svg>
+              </div>
+            </div>
+
+            <!-- 2. 價格彈性與模擬試算 -->
+            <div class="bg-white border border-gray-200 rounded shadow-sm p-4 grid grid-cols-1 md:grid-cols-12 gap-5 text-gray-800">
+              <div class="md:col-span-7 flex flex-col gap-2">
+                <div class="flex items-center gap-1.5">
+                  <i data-lucide="compass" class="w-4 h-4 text-emerald-600"></i>
+                  <h5 class="text-xs font-bold text-gray-850">
+                    價格彈性度與利潤最佳化區間 (Price Elasticity Analysis)
+                  </h5>
+                </div>
+                <p class="text-[10px] text-gray-450">
+                  根據亞馬遜 Buy Box 博弈矩陣二階推演：降價刺激流速銷量，升價擠壓利潤。
+                </p>
+
+                <!-- SVG 價格彈性拋物曲線 -->
+                <div class="w-full h-[95px] bg-gray-50 border border-gray-150 rounded relative overflow-hidden">
+                  <svg id="elasticity-svg" class="w-full h-full" viewBox="0 0 350 85">
+                  </svg>
+                </div>
+
+                <div class="flex justify-between text-[10px] text-gray-500 mt-1">
+                  <span class="flex items-center gap-1">
+                    <span class="w-2.5 h-2.5 rounded bg-emerald-600"></span>
+                    利潤峰位：最適售價 <span class="text-emerald-700 font-mono font-bold" id="optimal-price-label">$36.00</span>
+                  </span>
+                  <span class="flex items-center gap-1">
+                    <span class="w-2.5 h-2.5 rounded bg-amber-500"></span>
+                    當前模擬價：<span class="text-amber-600 font-mono font-bold" id="simulated-price-label">$39.99</span>
+                  </span>
+                </div>
+              </div>
+
+              <!-- 價格調節試算滑桿 -->
+              <div class="md:col-span-5 flex flex-col justify-between gap-3 bg-gray-50 p-4 border border-gray-200 rounded">
+                <div>
+                  <h6 class="text-xs font-bold text-gray-800">智慧動態定價試算器</h6>
+                  <p class="text-[11px] text-gray-500 mt-0.5 leading-tight">
+                    拉動調整價格，模擬對單月「銷量 vs 淨收益」的彈性防護作用。
+                  </p>
+                </div>
+
+                <div class="my-1">
+                  <div class="flex justify-between text-xs font-mono mb-1">
+                    <span class="text-gray-600 font-bold">模擬售價</span>
+                    <span class="text-[#B12704] font-bold animate-pulse" id="slider-price-val">$39.99</span>
+                  </div>
+                  <input
+                    id="sim-price-range"
+                    type="range"
+                    min="15"
+                    max="60"
+                    value="40"
+                    oninput="onPriceSliderChange(this.value)"
+                    class="w-full h-1.5 bg-gray-200 rounded appearance-none cursor-pointer accent-[#ff9900]"
+                  />
+                  <div class="flex justify-between text-[8px] font-mono text-gray-400 mt-1">
+                    <span>最低限</span>
+                    <span>建議最適</span>
+                    <span>最高限</span>
+                  </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-2 border-t border-gray-100 pt-3">
+                  <div class="bg-white p-2 rounded border border-gray-200 shadow-sm text-center">
+                    <span class="text-[9px] text-gray-400 block font-bold">模擬預計月銷</span>
+                    <span class="text-xs font-bold text-gray-800 font-mono block mt-0.5" id="sim-qty">75 件</span>
+                  </div>
+                  <div class="bg-white p-2 rounded border border-gray-200 shadow-sm text-center">
+                    <span class="text-[9px] text-gray-400 block font-bold">預估下月盈餘</span>
+                    <span class="text-xs font-bold text-emerald-600 font-mono block mt-0.5" id="sim-profit">$1,800</span>
+                  </div>
+                </div>
+
+                <div class="text-[10px] text-gray-600 bg-white p-2 border border-gray-200 flex items-start gap-1 rounded">
+                  <i data-lucide="trending-up" class="w-3.5 h-3.5 text-[#ff9900] shrink-0 mt-0.5"></i>
+                  <span id="repricer-tip">當前定價穩健，預估可帶來穩健轉化表現與卓越利潤防護。</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 第二區：AI 核心、危機事件注入與 Rufus 互動助理 -->
+      <section class="grid grid-cols-1 xl:grid-cols-12 gap-6">
+        <!-- 核心一：自動化與即時控制日誌 -->
+        <div class="xl:col-span-6 flex flex-col gap-6">
+          <div class="flex flex-col h-full bg-white border border-gray-200 rounded shadow-sm p-5 border-l-4 border-blue-600 justify-between">
+            <div>
+              <h2 class="text-sm font-bold text-gray-800 uppercase flex items-center gap-2 border-b border-gray-100 pb-3 mb-4">
+                <i data-lucide="database" class="w-4 h-4 text-blue-600"></i> 二、AI 核心：1. 自動化與 3. 即時化控制中心 (Automation & Real-time)
+              </h2>
+              <p class="text-xs text-gray-500 mb-4">
+                自動化調配補貨單、定價博弈策略，並在港口塞港、社群火爆等即時突發事件發生時進行 AI 緊急容延調撥。
+              </p>
+            </div>
+
+            <!-- 子頁籤分流 -->
+            <div class="flex border border-gray-200 rounded overflow-hidden mb-4">
+              <button onclick="switchTab('automation')" id="tab-btn-automation" class="flex-1 py-1.5 text-xs font-bold bg-gray-100 text-gray-900 border-r border-gray-200">
+                自動化設定 (Automation)
+              </button>
+              <button onclick="switchTab('realtime')" id="tab-btn-realtime" class="flex-1 py-1.5 text-xs font-bold bg-white text-gray-500">
+                即時日誌流 (Real-time Logs)
+              </button>
+            </div>
+
+            <!-- 自動化面板 -->
+            <div id="tab-panel-automation" class="flex flex-col gap-4">
+              <div class="grid grid-cols-3 gap-2.5">
+                <div class="p-3 rounded border border-amber-300 bg-amber-50/10">
+                  <span class="text-[10px] text-amber-700 uppercase font-bold block">SCOT 智能補貨</span>
+                  <p class="text-[9.5px] text-gray-500 mt-1">安全臨界點 (ROP) 自動提 FBA 補給，智慧控制缺銷風險。</p>
+                </div>
+                <div class="p-3 rounded border border-gray-200 bg-white">
+                  <span class="text-[10px] text-gray-850 uppercase font-bold block">購物車 Repricer</span>
+                  <p class="text-[9.5px] text-gray-500 mt-1">12ms 偵測調價，保障最低毛利底線下搶下黃金購物車權。</p>
+                </div>
+                <div class="p-3 rounded border border-gray-200 bg-white">
+                  <span class="text-[10px] text-gray-850 uppercase font-bold block">多渠道配送優化</span>
+                  <p class="text-[9.5px] text-gray-500 mt-1">物流延誤超 1.5x 自動分流，調用東岸多倉就近配送。</p>
+                </div>
+              </div>
+
+              <!-- 外部危機注入 -->
+              <div class="border-t border-gray-150 pt-3">
+                <span class="text-[11.5px] font-bold text-gray-700 block mb-2">⚡ 模擬外部危機對 AI 點火運算的作用 (Crisis Inject)</span>
+                <div class="grid grid-cols-3 gap-2">
+                  <button onclick="triggerCrisis('competitor')" class="bg-red-50 hover:bg-red-100 text-red-700 border border-red-200 py-2 px-2 rounded text-[10.5px] font-bold flex items-center justify-center gap-1 transition">
+                    <i data-lucide="flame" class="w-3 h-3"></i> 競品削價大戰
+                  </button>
+                  <button onclick="triggerCrisis('logistic')" class="bg-amber-50 hover:bg-amber-100 text-amber-800 border border-amber-200 py-2 px-2 rounded text-[10.5px] font-bold flex items-center justify-center gap-1 transition">
+                    <i data-lucide="ship" class="w-3 h-3"></i> 港口罷工塞車
+                  </button>
+                  <button onclick="triggerCrisis('viral')" class="bg-blue-50 hover:bg-blue-100 text-blue-700 border border-blue-200 py-2 px-2 rounded text-[10.5px] font-bold flex items-center justify-center gap-1 transition">
+                    <i data-lucide="zap" class="w-3 h-3"></i> 社群病毒推流
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- 即時日誌日誌流面板 -->
+            <div id="tab-panel-realtime" class="hidden flex flex-col gap-3">
+              <div class="flex justify-between items-center text-[10px] text-gray-400 bg-gray-50 px-2.5 py-1 rounded">
+                <span>秒級實時控制串流日誌</span>
+                <span class="text-green-600 font-bold font-mono animate-pulse">● LIVE STATUS</span>
+              </div>
+              <div class="h-[180px] overflow-y-auto flex flex-col gap-2 rounded border border-gray-150 p-2 bg-white" id="standalone-logs-container">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 核心二：Rufus 互動助理 -->
+        <div class="xl:col-span-6 flex flex-col gap-6">
+          <div class="flex flex-col h-full bg-white border border-gray-200 rounded shadow-sm p-5 border-l-4 border-purple-600 justify-between h-[360px]">
+            <div>
+              <h2 class="text-sm font-bold text-gray-800 uppercase flex items-center gap-2 border-b border-gray-100 pb-3 mb-4">
+                <i data-lucide="sliders" class="w-4 h-4 text-purple-600"></i> 二、AI 核心：2. 互動化諮商助理 (Conversational Advisor)
+              </h2>
+              <p class="text-xs text-gray-500 mb-2">
+                由 Amazon Rufus AI 協助您，針對特定在庫 SKU 進行供需彈性、港口補償物流諮商。
+              </p>
+            </div>
+
+            <div class="flex-1 overflow-y-auto max-h-[160px] border border-gray-150 rounded bg-[#FAFBFB] p-3 flex flex-col gap-3 text-xs mb-3" id="rufus-standalone-chat-box">
+              <div class="bg-white p-2 border border-gray-200 rounded self-start max-w-[90%]">
+                <span class="text-[9px] text-[#ff9900] font-bold font-mono">Rufus AI • 06:32</span>
+                <p class="mt-0.5 leading-relaxed text-gray-700">哈囉！我是您的亞馬遜智慧零售與採購優化助手 Rufus。目前正在監控四大在庫 SKU 銷售，請拉動右下方 Sliders 配合作業進行高難度預測，或輸入您面臨的供應鏈難關發問！</p>
+              </div>
+            </div>
+
+            <!-- 對話發送 -->
+            <div class="flex gap-2">
+              <input id="chat-txt" type="text" placeholder="向 Rufus 發問... 例如: 對手大打折, 我們應該跟進降價嗎?" class="flex-1 border border-gray-200 rounded px-2.5 py-1.5 text-xs outline-none focus:border-purple-600 bg-gray-50 focus:bg-white" onkeydown="if(event.key === 'Enter') sendStandaloneMessage()" />
+              <button onclick="sendStandaloneMessage()" class="bg-[#ff9900] text-gray-900 px-4 py-1.5 text-xs font-bold rounded hover:bg-[#ffaa00] transition">發送</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 第三區：系統環型架構及雙向滑桿控制 -->
+      <section class="bg-white border border-gray-200 rounded shadow-sm p-6 flex flex-col gap-5 border-t-4 border-[#ff9900] mb-8">
+        <div class="flex items-center gap-2 border-b border-gray-100 pb-4 mb-2">
+          <h2 class="text-bold text-sm text-gray-800 flex items-center gap-2">
+            <i data-lucide="wrench" class="w-4 h-4 text-[#ff9900]"></i>
+            三、系統架構設計：輸入-處理-輸出與回饋循環 (System Architecture Workflow & Correction)
+          </h2>
+        </div>
+        <p class="text-xs text-gray-500 -mt-2">
+          設定角色和目標「輸入(Input)」，交由資料鏈以及 AI 演算法進行「處理優化(Process)」，展示利潤周轉指標「輸出(Output)」，並支援滑動回饋機制將定價、庫存塞港 buffer 一鍵「回饋修正」形成科學閉環。
+        </p>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+          <div class="lg:col-span-4 flex flex-col gap-4">
+            <h4 class="text-xs font-bold text-gray-900 flex items-center gap-1.5 uppercase tracking-wider">
+              <i data-lucide="check-circle" class="text-emerald-600 w-4 h-4"></i> 最終校正指標輸出 (Engine Output)
+            </h4>
+            <div class="grid grid-cols-1 gap-3">
+              <div class="bg-[#F7F8F8] border border-gray-250 p-4 rounded text-gray-900">
+                <span class="text-[9px] text-gray-400 block font-bold uppercase">毛利成長預估 (Margin Gain Accrued)</span>
+                <div class="flex justify-between items-end mt-1">
+                  <span class="text-base font-mono font-bold text-[#B12704]">+3.8%</span>
+                  <span class="text-[9px] bg-amber-50 border border-amber-205 text-[#B12704] px-1.5 py-0.5 rounded font-bold">Buy Box 特效</span>
+                </div>
+              </div>
+              <div class="bg-[#F7F8F8] border border-gray-250 p-4 rounded text-gray-900">
+                <span class="text-[9px] text-gray-400 block font-bold uppercase">庫存周轉加速 (Turnover Acceleration)</span>
+                <div class="flex justify-between items-end mt-1">
+                  <span class="text-base font-mono font-bold text-blue-700">-4.5 天</span>
+                  <span class="text-[9px] bg-blue-50 border border-blue-200 text-blue-700 px-1.5 py-0.5 rounded font-bold">防積壓</span>
+                </div>
+              </div>
+              <div class="bg-[#F7F8F8] border border-gray-250 p-4 rounded text-gray-900">
+                <span class="text-[9px] text-gray-400 block font-bold uppercase">FBA 缺貨斷貨風險 (Stockout Risk)</span>
+                <div class="flex justify-between items-end mt-1">
+                  <span class="text-base font-mono font-bold text-green-700">低風險 (2.1%)</span>
+                  <span class="text-[9px] bg-green-50 border border-green-200 text-green-700 px-1.5 py-0.5 rounded font-bold">安全存量保護</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 回饋滑桿 -->
+          <div class="lg:col-span-8 bg-white border border-gray-200 p-4 rounded flex flex-col gap-4">
+            <div>
+              <h4 class="text-xs font-bold text-gray-900 flex items-center gap-1.5 uppercase">
+                <i data-lucide="rotate-ccw" class="w-4 h-4 text-[#ff9900]"></i> 系統修正回饋循環 (Continuous Correction Loop)
+              </h4>
+              <p class="text-[11px] text-gray-500 mt-0.5">
+                透過調節控制權重與提出修正指導，輸入至處理端進行模型重新適應，落實「修正與回饋」的科學閉環。
+              </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <div class="flex justify-between text-xs font-mono mb-1">
+                  <span class="text-gray-600 font-bold">自適應 AI 預測權重</span>
+                  <span class="text-blue-700 font-extrabold" id="feed-weight-lbl">80%</span>
+                </div>
+                <input type="range" min="10" max="100" value="80" oninput="document.getElementById('feed-weight-lbl').innerText = this.value + '%'" class="w-full h-1.5 bg-gray-200 rounded appearance-none cursor-pointer accent-blue-600" />
+              </div>
+              <div>
+                <div class="flex justify-between text-xs font-mono mb-1">
+                  <span class="text-gray-600 font-bold">競爭調價彈性靈敏度</span>
+                  <span class="text-amber-600 font-extrabold" id="feed-elasticity-lbl">1.8x</span>
+                </div>
+                <input type="range" min="0.5" max="4.0" step="0.1" value="1.8" oninput="document.getElementById('feed-elasticity-lbl').innerText = this.value + 'x'" class="w-full h-1.5 bg-gray-200 rounded appearance-none cursor-pointer accent-[#ff9900]" />
+              </div>
+            </div>
+
+            <div class="flex flex-col gap-3 pt-2 border-t border-gray-100">
+              <div>
+                <div class="flex justify-between text-xs font-mono mb-1">
+                  <span class="text-gray-650 font-bold">額外海運/卡車塞車補償 buffer</span>
+                  <span class="text-purple-600 font-bold" id="feed-buffer-lbl">10%</span>
+                </div>
+                <input type="range" min="0" max="40" step="5" value="10" oninput="document.getElementById('feed-buffer-lbl').innerText = this.value + '%'" class="w-full h-1.5 bg-gray-250 text-purple-600 cursor-pointer rounded appearance-none accent-purple-600" />
+              </div>
+
+              <div>
+                <label class="text-xs font-bold text-gray-700 block mb-1">優化指導與異常修正意見 (Qualitative Guidelines)</label>
+                <textarea id="standalone-comments" rows="2" placeholder="例如: 港口塞櫃，請自動延長 Ring 門鈴 ROP 的補貨天數調整..." class="w-full bg-gray-50 border border-gray-200 rounded p-2.5 text-xs outline-none focus:bg-white focus:border-[#ff9900]"></textarea>
+              </div>
+
+              <button onclick="calcStandaloneOptimization()" class="w-full bg-[#ff9900] hover:bg-amber-550 border border-amber-600 font-black py-2.5 rounded text-xs text-gray-900 transition flex items-center justify-center gap-1.5">
+                送出修正回饋並重載利潤迴路 <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <footer class="mt-12 text-center text-[10px] text-gray-500 border-t border-gray-300 pt-6 flex flex-col sm:flex-row justify-between items-center gap-4">
+        <span>亞馬遜智慧 Flywheel 供應鏈體系模擬器 • 基於 Google Gemini Flash 端深度自學習序列</span>
+        <span>© 2026 Amazon SCOT-AI NextGen Sandbox. All rights reserved.</span>
+      </footer>
+
+    </main>
+
+    <!-- 3. 前端交互狀態控制邏輯 (純靜態 HTML 完美模擬) -->
+    <script>
+      const productsData = {
+        echo_pop: {
+          name: "Amazon Echo Pop 智慧音箱",
+          category: "物聯網與智慧家庭",
+          price: 39.99,
+          cost: 16.00,
+          competitorPrice: 38.99,
+          stock: 75,
+          actualSales: [45, 52, 48, 62, 58, 65],
+          demandPrediction: [68, 75, 82, 88, 92, 90],
+          safetyStock: 110,
+          optimalPrice: 36.00,
+          elasticityQty: (p) => Math.round(95 - 1.25 * p),
+          elasticityProfit: (p) => Math.round((p - 16) * (95 - 1.25 * p))
+        },
+        kindle_paper: {
+          name: "Kindle Paperwhite 電子閱讀器",
+          category: "消費電子與數位內容",
+          price: 139.99,
+          cost: 62.00,
+          competitorPrice: 134.99,
+          stock: 155,
+          actualSales: [122, 115, 130, 125, 140, 148],
+          demandPrediction: [150, 155, 162, 170, 168, 175],
+          safetyStock: 120,
+          optimalPrice: 125.00,
+          elasticityQty: (p) => Math.round(280 - 1.5 * p),
+          elasticityProfit: (p) => Math.round((p - 62) * (280 - 1.5 * p))
+        },
+        ring_bell: {
+          name: "Ring Video Doorbell 連網門鈴",
+          category: "智慧家居保全",
+          price: 99.99,
+          cost: 48.00,
+          competitorPrice: 94.99,
+          stock: 310,
+          actualSales: [190, 195, 210, 205, 215, 220],
+          demandPrediction: [225, 230, 240, 235, 245, 250],
+          safetyStock: 200,
+          optimalPrice: 88.00,
+          elasticityQty: (p) => Math.round(450 - 3 * p),
+          elasticityProfit: (p) => Math.round((p - 48) * (450 - 3 * p))
+        },
+        fire_stick: {
+          name: "Fire TV Stick 4K 串流電視棒",
+          category: "數位智慧機上盒",
+          price: 49.99,
+          cost: 22.00,
+          competitorPrice: 44.99,
+          stock: 42,
+          actualSales: [80, 85, 95, 90, 110, 115],
+          demandPrediction: [120, 130, 135, 140, 145, 150],
+          safetyStock: 125,
+          optimalPrice: 42.00,
+          elasticityQty: (p) => Math.round(250 - 3 * p),
+          elasticityProfit: (p) => Math.round((p - 22) * (250 - 3 * p))
+        }
+      };
+
+      let selectedId = "echo_pop";
+      let simulatedPrice = 39.99;
+
+      window.onload = () => {
+        lucide.createIcons();
+        selectProduct("echo_pop");
+        initLogs();
+      };
+
+      function selectProduct(id) {
+        selectedId = id;
+        const prod = productsData[id];
+        simulatedPrice = prod.price;
+
+        document.querySelectorAll("#product-list button").forEach(btn => {
+          btn.classList.add("bg-white", "border-gray-200", "text-gray-700");
+          btn.classList.remove("bg-amber-50/80", "border-[#ff9900]", "shadow-sm", "text-gray-900");
+        });
+        const currentBtn = document.getElementById("btn-sku-" + id);
+        currentBtn.classList.remove("bg-white", "border-gray-200", "text-gray-700");
+        currentBtn.classList.add("bg-amber-50/80", "border-[#ff9900]", "shadow-sm", "text-gray-900");
+
+        document.getElementById("forecast-title").innerText = `SCOT 預測模型：銷售趨勢 12 週分析 (${prod.name})`;
+        document.getElementById("optimal-price-label").innerText = `$${prod.optimalPrice.toFixed(2)}`;
+        document.getElementById("slider-price-val").innerText = `$${simulatedPrice.toFixed(2)}`;
+        
+        const sliderInput = document.getElementById("sim-price-range");
+        sliderInput.min = Math.floor(prod.cost * 1.15);
+        sliderInput.max = Math.round(prod.price * 1.5);
+        sliderInput.value = Math.round(simulatedPrice);
+
+        onPriceSliderChange(simulatedPrice);
+        renderForecastChart(prod);
+        renderElasticityChart(prod);
+      }
+
+      function onPriceSliderChange(val) {
+        simulatedPrice = Number(val);
+        document.getElementById("slider-price-val").innerText = `$${simulatedPrice.toFixed(2)}`;
+        document.getElementById("simulated-price-label").innerText = `$${simulatedPrice.toFixed(2)}`;
+
+        const prod = productsData[selectedId];
+        const qty = prod.elasticityQty(simulatedPrice);
+        const profit = prod.elasticityProfit(simulatedPrice);
+
+        document.getElementById("sim-qty").innerHTML = `${qty} <span class="text-[10px] font-normal text-gray-400">件/月</span>`;
+        document.getElementById("sim-profit").innerHTML = `$${profit.toLocaleString()}`;
+
+        let tip = "當前定價穩健，預估可帶來穩健轉化表現與卓越利潤防護。";
+        if (simulatedPrice < prod.optimalPrice) {
+          tip = "削價競爭雖然能迅速獲得 100% 黃金購物車，但此單利過低，不利毛利最大化。";
+        } else if (simulatedPrice > prod.optimalPrice + 5) {
+          tip = "偏高的售價使轉化彈性降低，Buy Box 分配機率可能大減。";
+        }
+        document.getElementById("repricer-tip").innerText = tip;
+
+        renderElasticityChart(prod);
+      }
+
+      function renderForecastChart(prod) {
+        const svg = document.getElementById("forecast-svg");
+        const actuals = prod.actualSales;
+        const prediction = prod.demandPrediction;
+        const combined = [...actuals, ...prediction];
+        const maxVal = Math.max(...combined) * 1.15;
+
+        let content = "";
+        const padding = 35;
+        const width = 560;
+        const height = 140;
+
+        for (let r = 0; r <= 3; r++) {
+          const ratio = r / 3;
+          const y = height - padding - ratio * (height - padding * 2);
+          content += `<line x1="${padding}" y1="${y}" x2="${width - padding}" y2="${y}" stroke="#e5e7eb" stroke-dasharray="4 4"/>`;
+          content += `<text x="${padding - 6}" y="${y + 3}" fill="#6b7280" font-size="9" text-anchor="end" font-family="JetBrains Mono">${Math.round(maxVal * ratio)}</text>`;
+        }
+
+        const getX = (i) => padding + (i * (width - padding * 2)) / 11;
+        const getY = (val) => height - padding - (val / maxVal) * (height - padding * 2);
+
+        actuals.forEach((val, i) => {
+          const x = getX(i);
+          const y = getY(val);
+          const barWidth = 14;
+          content += `
+            <g class="group">
+              <rect x="${x - barWidth/2}" y="${y}" width="${barWidth}" height="${height - padding - y}" fill="#37475A" rx="1" />
+              <text x="${x}" y="${y - 4}" fill="#4b5563" font-size="8" text-anchor="middle" font-family="JetBrains Mono">${val}</text>
+            </g>
+          `;
+        });
+
+        let forecastPath = "";
+        prediction.forEach((val, i) => {
+          const x = getX(i + 6);
+          const y = getY(val);
+          forecastPath += `${i === 0 ? 'M' : 'L'}${x},${y}`;
+
+          content += `
+            <g class="group">
+              <circle cx="${x}" cy="${y}" r="3.5" fill="#2563eb" stroke="#ffffff" stroke-width="1.5" />
+              <text x="${x}" y="${y - 6}" fill="#2563eb" font-size="8" font-weight="bold" text-anchor="middle" font-family="JetBrains Mono">${val}</text>
+            </g>
+          `;
+        });
+
+        content += `<path d="${forecastPath}" fill="none" stroke="#2563eb" stroke-width="2.2" stroke-dasharray="4 3" />`;
+
+        let actualPath = actuals.map((val, i) => `${i === 0 ? 'M' : 'L'}${getX(i)},${getY(val)}`).join(" ");
+        content += `<path d="${actualPath}" fill="none" stroke="#9ca3af" stroke-width="1.5" opacity="0.5" />`;
+
+        const months = ["Wk-6", "Wk-5", "Wk-4", "Wk-3", "Wk-2", "Wk-1", "FC-1", "FC-2", "FC-3", "FC-4", "FC-5", "FC-6"];
+        months.forEach((label, i) => {
+          const x = getX(i);
+          const color = i < 6 ? "#6b7280" : "#2563eb";
+          content += `<text x="${x}" y="${height - 10}" fill="${color}" font-size="9" font-weight="bold" text-anchor="middle" font-family="JetBrains Mono">${label}</text>`;
+        });
+
+        svg.innerHTML = content;
+      }
+
+      function renderElasticityChart(prod) {
+        const svg = document.getElementById("elasticity-svg");
+        const padding = 20;
+        const width = 340;
+        const height = 75;
+
+        const minPrice = Math.floor(prod.cost * 1.1);
+        const maxPrice = Math.round(prod.price * 1.55);
+
+        let profitPoints = [];
+        const steps = 15;
+        for (let i = 0; i <= steps; i++) {
+          const p = minPrice + (i * (maxPrice - minPrice)) / steps;
+          profitPoints.push({ x: p, y: prod.elasticityProfit(p) });
+        }
+
+        const maxP = Math.max(...profitPoints.map(pt => pt.y));
+        const getX = (p) => padding + ((p - minPrice) * (width - padding * 2)) / (maxPrice - minPrice);
+        const getY = (profit) => height - padding - (Math.max(0, profit) / maxP) * (height - padding * 1.8);
+
+        let content = "";
+        let pathD = "";
+
+        profitPoints.forEach((pt, i) => {
+          const cx = getX(pt.x);
+          const cy = getY(pt.y);
+          pathD += `${i === 0 ? 'M' : 'L'}${cx},${cy}`;
+        });
+
+        content += `<path d="${pathD}" fill="none" stroke="#10b981" stroke-width="2.5" />`;
+        content += `<line x1="${padding}" y1="${height-padding}" x2="${width-padding}" y2="${height-padding}" stroke="#e5e7eb" />`;
+
+        const optX = getX(prod.optimalPrice);
+        const optY = getY(prod.elasticityProfit(prod.optimalPrice));
+        content += `<circle cx="${optX}" cy="${optY}" r="4" fill="#10b981" stroke="#ffffff" stroke-width="1.8" />`;
+
+        const simX = getX(simulatedPrice);
+        const simY = getY(prod.elasticityProfit(simulatedPrice));
+        content += `<circle cx="${simX}" cy="${simY}" r="4" fill="#f59e0b" stroke="#ffffff" stroke-width="1.8" />`;
+
+        svg.innerHTML = content;
+      }
+
+      function switchTab(tab) {
+        const panAuto = document.getElementById("tab-panel-automation");
+        const panReal = document.getElementById("tab-panel-realtime");
+        const btnAuto = document.getElementById("tab-btn-automation");
+        const btnReal = document.getElementById("tab-btn-realtime");
+
+        if (tab === "automation") {
+          panAuto.classList.remove("hidden");
+          panReal.classList.add("hidden");
+          btnAuto.classList.add("bg-gray-100", "text-gray-900");
+          btnAuto.classList.remove("bg-white", "text-gray-500");
+          btnReal.classList.remove("bg-gray-100", "text-gray-900");
+          btnReal.classList.add("bg-white", "text-gray-500");
+        } else {
+          panReal.classList.remove("hidden");
+          panAuto.classList.add("hidden");
+          btnReal.classList.add("bg-gray-100", "text-gray-900");
+          btnReal.classList.remove("bg-white", "text-gray-500");
+          btnAuto.classList.remove("bg-gray-100", "text-gray-900");
+          btnAuto.classList.add("bg-white", "text-gray-500");
+          initLogs();
+        }
+      }
+
+      let logsList = [
+        { time: "06:30:12", msg: "SCOT 預測引擎啟動，載入近 6 週大數據與 Flywheel 因子權重完成。", cat: "info" },
+        { time: "06:30:45", msg: "FBA 全球保稅庫配額容量刷新，已預留 12.5% 前置特快緩衝區。", cat: "info" },
+        { time: "06:31:10", msg: "智慧自動調價 Repricer 激活，偵測 Buy Box 自動對比機制啟動。", cat: "success" },
+        { time: "06:32:05", msg: "警告：Fire TV Stick 實在庫存(42)低於安全水位門檻(125)！", cat: "error" }
+      ];
+
+      function initLogs() {
+        const box = document.getElementById("standalone-logs-container");
+        box.innerHTML = logsList.map(item => `
+          <div class="p-2 border-b border-gray-100 text-[10.5px] items-center flex justify-between">
+            <div>
+              <span class="text-[9px] font-mono text-gray-400 mr-2">${item.time}</span>
+              <span class="font-medium ${item.cat === 'error' ? 'text-red-700 font-bold' : item.cat === 'success' ? 'text-green-700' : 'text-gray-700'}">${item.msg}</span>
+            </div>
+            <span class="text-[8px] bg-gray-50 border px-1 rounded uppercase font-bold">${item.cat}</span>
+          </div>
+        `).join("");
+      }
+
+      function triggerCrisis(type) {
+        const now = new Date();
+        const time = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}:${now.getSeconds().toString().padStart(2, '0')}`;
+        let crisisMsg = "";
+        let botMsg = "";
+
+        if (type === "competitor") {
+          crisisMsg = "⚠️ 警報：對手大幅促銷降價 Echo Pop 10%！Repricer 自動博弈系統已主動微調 Buy Box 定價追尾。";
+          botMsg = "🚨 **對手大降價**：我們智慧調價演算法已於 15 毫秒內將零售價降至對比最佳區間，黃金購物車得手率維持在 94%！";
+          productsData.echo_pop.price = Math.round(productsData.echo_pop.price * 0.9 - 0.2);
+          selectProduct("echo_pop");
+        } else if (type === "logistic") {
+          crisisMsg = "🚨 海運爆港爆發：LA 碼頭工人進行罷工囤積，前置航程 Lead Time 順延增加 1.8x。";
+          botMsg = "⚓ **供應鏈受阻**：美西罷工使運程拖長。為了第四季節慶，我們已經將 ROP 水位自動往上加乘 80%，並緊急採用越庫東海岸調度防範斷貨。";
+          document.getElementById("alert-kpi").innerText = "ROP 上移 1.8x";
+        } else if (type === "viral") {
+          crisisMsg = "🔥 TikTok 強力推文：社群網紅帶貨爆款，下月流量與需求預測曲線上修 210%！";
+          botMsg = "📈 **需求暴起**：我們藉由外部 API 爬取到千萬級宣傳，產品訂單預估拉升 210%。已將前置調貨與代工補貨追加投產，預防 5 日內斷代缺銷。";
+        }
+
+        logsList.unshift({ time, msg: crisisMsg, cat: type === 'competitor' ? 'success' : 'error' });
+        initLogs();
+
+        const chatBox = document.getElementById("rufus-standalone-chat-box");
+        chatBox.innerHTML += `
+          <div class="bg-amber-50/20 p-2 border border-amber-200 rounded self-start max-w-[90%] mt-2">
+            <span class="text-[9px] text-[#ff9900] font-bold font-mono">Rufus AI • ${time.slice(0, 5)}</span>
+            <p class="mt-0.5 leading-relaxed text-gray-700">${botMsg}</p>
+          </div>
+        `;
+        chatBox.scrollTop = chatBox.scrollHeight;
+        switchTab("realtime");
+      }
+
+      function sendStandaloneMessage() {
+        const input = document.getElementById("chat-txt");
+        const txt = input.value.trim();
+        if (!txt) return;
+
+        const now = new Date();
+        const time = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
+        
+        const chatBox = document.getElementById("rufus-standalone-chat-box");
+        
+        chatBox.innerHTML += `
+          <div class="bg-[#232F3E] text-white p-2.5 rounded rounded-tr-none self-end max-w-[85%] mt-2 font-bold">
+            <span class="text-[9px] text-gray-300 font-mono">系統管理官 • ${time}</span>
+            <p class="mt-0.5">${txt}</p>
+          </div>
+        `;
+        
+        input.value = "";
+        chatBox.scrollTop = chatBox.scrollHeight;
+
+        setTimeout(() => {
+          let reply = `收到您的方針！針對選中的【${productsData[selectedId].name}】，在目前的輸入(Input)下，我們應該隨時維持 Repricer 自動調價開啟以防止對手削價威脅黃金購物車；並且若出現供應鏈罷工，應滑動下方第三區的【海運/卡車補償 Buffer】至 20%，讓 SCOT 引擎重新推估前置排外時間。`;
+          if (txt.includes("罷工") || txt.includes("塞車")) {
+            reply = "罷工與物流塞車是典型的 FBA 異常(Out-of-Stock)震盪。目前亞馬遜已針對這款進行多倉分選，您提報的 Qualitative 給予我們非常高的自適應調整信號，補足了結構性缺點！";
+          }
+          
+          chatBox.innerHTML += `
+            <div class="bg-white p-2.5 border border-gray-200 rounded self-start max-w-[90%] mt-2">
+              <span class="text-[9px] text-[#ff9900] font-bold font-mono">Rufus AI • ${time}</span>
+              <p class="mt-0.5 leading-relaxed text-gray-700">${reply}</p>
+            </div>
+          `;
+          chatBox.scrollTop = chatBox.scrollHeight;
+        }, 1000);
+      }
+
+      function calcStandaloneOptimization() {
+        const comments = document.getElementById("standalone-comments").value;
+        const now = new Date();
+        const time = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}:${now.getSeconds().toString().padStart(2, '0')}`;
+        
+        alert("🔄 正在載入 SCOT 二次最佳化回饋引擎... \\n已讀取 Qualitative guidelines：「 " + (comments || "(無留言)") + " 」。已成功套用雙向循環。");
+        
+        logsList.unshift({ time, msg: "🔄 常規決策系統已收到回饋修正滑桿參數指令，引擎重置利潤博弈迴路。", cat: "success" });
+        initLogs();
+
+        const chatBox = document.getElementById("rufus-standalone-chat-box");
+        chatBox.innerHTML += `
+          <div class="bg-green-50/50 p-2.5 border border-green-200 rounded self-start max-w-[90%] mt-2">
+            <span class="text-[9px] text-green-700 font-bold font-mono">Rufus AI • ${time.slice(0,5)}</span>
+            <p class="mt-0.5 leading-relaxed text-gray-700">🤖 **雙向最佳化回饋更新**\\n\\n系統已同步完成您提供的 Sliders 條件修正，對毛利成長比產生了優越調節作用。下月預估毛利再度攀升至 **+4.1%**，物流斷貨概率降低至 **1.8%** 極限高安全檔！</p>
+          </div>
+        `;
+        chatBox.scrollTop = chatBox.scrollHeight;
+      }
+    </script>
+  </body>
+</html>
